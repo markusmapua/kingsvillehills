@@ -1,7 +1,6 @@
 <?php
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Kingsville Connect - 404</title>
+    <title>SB Admin 2 - Blank</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -32,7 +31,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <!-- Sidebar Module -->
+        <!-- Sidebar -->
         <?php include 'sidebar.php'; ?>
 
         <!-- Content Wrapper -->
@@ -47,13 +46,8 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- 404 Error Text -->
-                    <div class="text-center">
-                        <div class="error mx-auto" data-text="404">404</div>
-                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
-                        <p class="text-gray-500 mb-0">The page you were trying to enter is invalid.</p>
-                        <a href="index.php">&larr; Back to Home</a>
-                    </div>
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -62,7 +56,14 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include 'footer.php'; ?>
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Your Website 2020</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->
