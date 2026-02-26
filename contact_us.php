@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Blank</title>
+    <title>Kingsville Connect - Contact Us</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -46,8 +46,19 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">Blank Page</h1>
+                    <!-- Kingsville Hills Contacts -->
+                    <h1 class="h3 mb-4 text-gray-800">Contact Information</h1>
+                    <p>Should you have any questions with Kingsville services, contact management with the following:</p>
+
+                    <ul>
+                        <li><strong>Email:</strong> <a href="mailto:kingsville_support@gmail.com">kingsville_support@gmail.com</a></li>
+                        <li><strong>Phone:</strong> 
+                            <ul>
+                                <li>Landline: (02) 8456-7890</li>
+                                <li>Globe/TM: (+63) 0916 654 4285</li>
+                            </ul>
+                        </li>
+                    </ul>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -56,13 +67,7 @@
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
-                    </div>
-                </div>
-            </footer>
+            <?php include 'footer.php'; ?>
             <!-- End of Footer -->
 
         </div>

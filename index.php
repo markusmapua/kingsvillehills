@@ -225,43 +225,41 @@
                         <!-- Content Column -->
                         <div class="col-lg-6 mb-4">
 
-                            <!-- Project Card Example -->
+                            <!-- Emergency Contacts -->
                             <div class="card shadow mb-4">
                                 <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Projects</h6>
+                                    <h6 class="m-0 font-weight-bold text-primary">Emergency Contacts</h6>
                                 </div>
                                 <div class="card-body">
-                                    <h4 class="small font-weight-bold">Server Migration <span
-                                            class="float-right">20%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
-                                            aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Sales Tracking <span
-                                            class="float-right">40%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
-                                            aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Customer Database <span
-                                            class="float-right">60%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar" role="progressbar" style="width: 60%"
-                                            aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Payout Details <span
-                                            class="float-right">80%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" role="progressbar" style="width: 80%"
-                                            aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <h4 class="small font-weight-bold">Account Setup <span
-                                            class="float-right">Complete!</span></h4>
-                                    <div class="progress">
-                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
-                                            aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
+                                    <p>Contact numbers in case of an emergency:</p>
+                                    <ul>
+                                        <li><strong>PNP Antipolo:</strong>
+                                            <ul>
+                                                <li>0917 157 7627</li>
+                                                <li>0998 589 5717</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>BFP Antipolo:</strong>
+                                            <ul>
+                                                <li>(02) 8871 2865</li>
+                                                <li>(02) 8533 8591</li>
+                                                <li>0945 155 6015</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>CDRRMO / Rescue:</strong>
+                                            <ul>
+                                                <li>(02) 8689 4576</li>
+                                                <li>(02) 8689 4564</li>
+                                            </ul>
+                                        </li>
+                                        <li><strong>Medical Emergency:</strong>
+                                            <ul>
+                                                <li>Rizal Provincial Hospital Annex 1: (02) 8639 8453 / (02) 8251 1559</li>
+                                                <li>Rizal Provincial Hospital Annex 2: (02) 8941 8518 / (02) 8997 9401</li>
+                                                <li>Antipolo Doctors Hospital: (02) 8650 8269</li>
+                                            </ul>
+                                        </li>
+                                    </ul>
                             </div>
 
                         </div>
