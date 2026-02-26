@@ -1,4 +1,6 @@
 <?php
+session_start();
+require 'db_connect.php';
 
 // error stuff
 $error_code = $_GET['code'] ?? '404';

@@ -1,5 +1,12 @@
 <?php
+session_start();
+require 'db_connect.php';
 
+// Is the user logged in? If not, redirect to login page
+if (!isset($_SESSION['user_id'])) {
+    header(header: "location: login.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

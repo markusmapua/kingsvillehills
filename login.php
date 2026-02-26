@@ -1,5 +1,38 @@
 <?php
+session_start();
+require 'db_connect.php';
 
+if (isset($_POST['login_submit'])) {
+    $email = mysqli_real_escape_string(mysql: $conn, string: $_POST['login_email']);
+    $password = mysqli_real_escape_string(mysql: $conn, string: $_POST['login_password']);
+
+    $query = "SELECT * FROM users WHERE email='$email'";
+    $result = mysqli_query(mysql: $conn, query: $query);
+
+    if (mysqli_num_rows(result: $result) == 1) {
+        $user = mysqli_fetch_assoc(result: $result);
+        if (password_verify(password: $password, hash: $user['password'])) {
+            // Set session variables
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['first_name'] = $user['first_name'];
+            $_SESSION['last_name'] = $user['last_name'];
+            $_SESSION['email'] = $user['email'];
+            $_SESSION['role'] = $user['role'];
+
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['full_name'] = $user['first_name'] . " " . $user['last_name'];
+            $_SESSION['role'] = $user['role'];
+
+            // Redirect to dashboard
+            header(header: "location: index.php");
+            exit();
+        } else {
+            echo "<script>alert('Incorrect password!');</script>";
+        }
+    } else {
+        echo "<script>alert('Email not found!');</script>";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -46,15 +79,15 @@
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Welcome to Kingsville Connect!</h1>
                                     </div>
-                                    <form class="user">
+                                    <form class="user" action = "login.php" method = "post">
                                         <div class="form-group">
                                             <input type="email" class="form-control form-control-user"
                                                 id="exampleInputEmail" aria-describedby="emailHelp"
-                                                placeholder="Enter Email Address...">
+                                                placeholder="Enter Email Address..." name = "login_email">
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password">
+                                                id="exampleInputPassword" placeholder="Password" name = "login_password">
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
@@ -63,9 +96,9 @@
                                                     Me</label>
                                             </div>
                                         </div>
-                                        <a href="index.html" class="btn btn-primary btn-user btn-block">
+                                        <button type="submit" name = "login_submit" class="btn btn-primary btn-user btn-block">
                                             Login
-                                        </a>
+                                        </button>
                                         <hr>
                                     </form>
                                     <div class="text-center">

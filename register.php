@@ -1,4 +1,42 @@
 <?php
+require 'db_connect.php';
+
+if (isset($_POST['reg_submit'])) {
+    // Collect form data
+    $fname = mysqli_real_escape_string(mysql: $conn, string: $_POST['reg_fname']);
+    $lname = mysqli_real_escape_string(mysql: $conn, string: $_POST['reg_lname']);
+    $email = mysqli_real_escape_string(mysql: $conn, string: $_POST['reg_email']);
+    $password = mysqli_real_escape_string(mysql: $conn, string: $_POST['reg_password']);
+    $confirm_password = mysqli_real_escape_string(mysql: $conn, string: $_POST['reg_confirm_password']);
+
+    // Basic validation
+    if ($password !== $confirm_password) {
+        echo "<script>alert('Passwords do not match!');</script>";
+        exit();
+    }
+
+    // Check if email already exists
+    $check_email_query = "SELECT * FROM users WHERE email='$email'";
+    $result = mysqli_query(mysql: $conn, query: $check_email_query);
+    if (mysqli_num_rows(result: $result) > 0) {
+        echo "<script>alert('Email already registered!');</script>";
+        exit();
+    }
+
+    // Hash the password
+    $hashed_password = password_hash(password: $password, algo: PASSWORD_DEFAULT);
+
+    // Insert user into database
+    $insert_query = "INSERT INTO users (first_name, last_name, email, password, role) VALUES ('$fname', '$lname', '$email', '$hashed_password', 'resident')";
+    
+    if (mysqli_query(mysql: $conn, query: $insert_query)) {
+        echo "<script>alert('Registration successful! Please log in.'); window.location.href='login.php';</script>";
+        exit();
+    } else {
+        echo "<script>alert('Error: " . mysqli_error(mysql: $conn) . "');</script>";
+        exit();
+    }
+}
 
 ?>
 
@@ -41,34 +79,34 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
                             </div>
-                            <form class="user">
+                            <form class="user" action = "register.php" method = "post">
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
-                                        <input type="text" class="form-control form-control-user" id="exampleFirstName"
+                                        <input type="text" class="form-control form-control-user" name = "reg_fname"
                                             placeholder="First Name">
                                     </div>
                                     <div class="col-sm-6">
-                                        <input type="text" class="form-control form-control-user" id="exampleLastName"
+                                        <input type="text" class="form-control form-control-user" name = "reg_lname"
                                             placeholder="Last Name">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <input type="email" class="form-control form-control-user" id="exampleInputEmail"
+                                    <input type="email" class="form-control form-control-user" name = "reg_email"
                                         placeholder="Email Address">
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
                                         <input type="password" class="form-control form-control-user"
-                                            id="exampleInputPassword" placeholder="Password">
+                                            name = "reg_password" placeholder="Password">
                                     </div>
                                     <div class="col-sm-6">
                                         <input type="password" class="form-control form-control-user"
-                                            id="exampleRepeatPassword" placeholder="Repeat Password">
+                                            name = "reg_confirm_password" placeholder="Repeat Password">
                                     </div>
                                 </div>
-                                <a href="login.html" class="btn btn-primary btn-user btn-block">
+                                <button type="submit" name = "reg_submit" class="btn btn-primary btn-user btn-block">
                                     Register Account
-                                </a>
+                                </button>
                             </form>
                             <hr>
                             <div class="text-center">
