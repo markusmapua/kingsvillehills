@@ -1,5 +1,29 @@
 <?php
 
+// error stuff
+$error_code = $_GET['code'] ?? '404';
+
+$error_title = "Unknown Error";
+$error_message = "Oops! An unknown error has occurred.";
+
+switch ($error_code) {
+    case '404':
+        $error_title = "404 Not Found";
+        $error_message = "The page you were trying to enter is invalid.";
+        break;
+    case '403':
+        $error_title = "403 Forbidden";
+        $error_message = "You do not have permission to access this page.";
+        break;
+    case '401':
+        $error_title = "401 Unauthorized";
+        $error_message = "You are not authorized to access this page.";
+        break;
+    case '500':
+        $error_title = "500 Internal Server Error";
+        $error_message = "An unexpected error has occurred on the server.";
+        break;
+}
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +37,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Kingsville Connect - 404</title>
+    <title><?php echo htmlspecialchars(string: $error_title); ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -49,10 +73,14 @@
 
                     <!-- 404 Error Text -->
                     <div class="text-center">
-                        <div class="error mx-auto" data-text="404">404</div>
-                        <p class="lead text-gray-800 mb-5">Page Not Found</p>
-                        <p class="text-gray-500 mb-0">The page you were trying to enter is invalid.</p>
-                        <a href="index.php">&larr; Back to Home</a>
+                        <div class="error mx-auto" data-text="<?php echo htmlspecialchars($error_code); ?>"><?php echo htmlspecialchars($error_code); ?></div>
+                        <p class="lead text-gray-800 mb-5"><?php echo htmlspecialchars($error_title); ?></p>
+                        <p class="text-gray-500 mb-0"><?php echo htmlspecialchars($error_message); ?></p>
+                        <?php if ($error_code == '404'): ?>
+                            <a href="index.php">&larr; Back to Dashboard</a>
+                            <?php elseif ($error_code == '403' || $error_code == '401'): ?>
+                            <a href="login.php">&larr; Back to Login</a>
+                        <?php endif; ?>
                     </div>
 
                 </div>
@@ -76,24 +104,7 @@
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php include 'logout_modal.php'; ?>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
