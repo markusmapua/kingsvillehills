@@ -7,3 +7,14 @@
 .kingsville-bar {
     background-color: #d6d31b;
 }
+
+/* FullCalendar */
+.fc .fc-toolbar-title {
+    font-size: 1.2rem !important;
+    font-weight: bold !important;
+}
+
+.fc-header-toolbar {
+    margin-bottom: 1rem !important; 
+}
+/* End of FullCalendar bit */

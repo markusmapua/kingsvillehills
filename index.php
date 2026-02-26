@@ -25,6 +25,9 @@
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
     <link href="css/main.css" rel="stylesheet">
 
+    <!-- Calendar stuff / FullCalendar -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.20/index.global.min.js'></script>
+
 </head>
 
 <body id="page-top">
@@ -52,7 +55,7 @@
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                     </div>
 
-                    <!-- Row for the stuff that residents submitted -->
+                    <!-- Dynamic card row to show pending stuff -->
                     <div class="row">
                         <!-- Pending Complaints / Notices -->
                         <div class="col-xl-3 col-md-6 mb-4">
@@ -61,8 +64,8 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                                Pending Complaints</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                                                <a href="view_complaint.php">Pending Complaints</a></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">1</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -77,48 +80,32 @@
 
                     <div class="row">
 
-                        <!-- Area Chart -->
-                        <div class="col-xl-8 col-lg-7">
-                            <div class="card shadow mb-4">
+                        <!-- Announcements Card -->
+                        <div class="col-xl-8 col-lg-7 mb-4">
+                            <div class="card shadow h-100">
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Announcements</h6>
                                 </div>
                                 <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
-                                    </div>
+                                <div class="card-body d-flex flex-column justify-content-center align-items-center" style="min-height: 20rem;">
+                                    <i class="fas fa-bullhorn fa-3x text-gray-300 mb-3"></i>
+                                    <p class="text-gray-500 mb-0"><i>No Announcements at this time.</i></p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
+                        <!-- Schedule Card -->
+                        <div class="col-xl-4 col-lg-5 mb-4">
+                            <div class="card shadow h-100">
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Schedules</h6>
                                 </div>
-                                <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
-                                    </div>
-                                </div>
+                                <!-- Here lies the calendar // Script below the footer -->
+                                <div id="calendar"></div>
                             </div>
                         </div>
                     </div>
@@ -181,6 +168,24 @@
 
             <!-- Footer -->
             <?php include 'footer.php'; ?>
+
+            <!-- Calendar script -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var calendarEl = document.getElementById('calendar');
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    themeSystem: 'bootstrap',
+
+                    headerToolbar: {
+                        left: 'prev,next',
+                        center: 'title',
+                        right: 'today'
+                    }
+                });
+                calendar.render();
+            });
+            </script>
 
         </div>
         <!-- End of Content Wrapper -->

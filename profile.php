@@ -1,6 +1,7 @@
 <?php
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,7 +13,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Kingsville Connect - Contact Us</title>
+    <title>Kingsville Connect - Profile</title>
 
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -31,7 +32,7 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        <!-- Sidebar -->
+        <!-- Sidebar Module -->
         <?php include 'sidebar.php'; ?>
 
         <!-- Content Wrapper -->
@@ -46,19 +47,8 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    <!-- Kingsville Hills Contacts -->
-                    <h1 class="h3 mb-4 text-gray-800">Contact Information</h1>
-                    <p>Should you have any questions with Kingsville services, contact management with the following:</p>
-
-                    <ul>
-                        <li><strong>Email:</strong> <a href="mailto:kingsville_support@gmail.com">kingsville_support@gmail.com</a></li>
-                        <li><strong>Phone:</strong> 
-                            <ul>
-                                <li>Landline: N/A</li>
-                                <li>Globe/TM: (+63) 0916 654 4285</li>
-                            </ul>
-                        </li>
-                    </ul>
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">Profile</h1>
 
                 </div>
                 <!-- /.container-fluid -->
@@ -68,7 +58,6 @@
 
             <!-- Footer -->
             <?php include 'footer.php'; ?>
-            <!-- End of Footer -->
 
         </div>
         <!-- End of Content Wrapper -->
