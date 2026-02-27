@@ -55,7 +55,6 @@ require 'db_connect.php';
                         <li><strong>Email:</strong> <a href="mailto:kingsville_support@gmail.com">kingsville_support@gmail.com</a></li>
                         <li><strong>Phone:</strong> 
                             <ul>
-                                <li>Landline: N/A</li>
                                 <li>Globe/TM: (+63) 0916 654 4285</li>
                             </ul>
                         </li>
@@ -68,7 +67,7 @@ require 'db_connect.php';
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include 'footer.php'; ?>
+            <?php include 'includes/footer.php'; ?>
             <!-- End of Footer -->
 
         </div>

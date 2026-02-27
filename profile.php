@@ -59,7 +59,7 @@ require 'db_connect.php';
             <!-- End of Main Content -->
 
             <!-- Footer -->
-            <?php include 'footer.php'; ?>
+            <?php include 'includes/footer.php'; ?>
 
         </div>
         <!-- End of Content Wrapper -->
