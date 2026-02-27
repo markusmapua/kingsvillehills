@@ -2,6 +2,12 @@
 session_start();
 require 'db_connect.php';
 
+// Checks if there are announcements
+$ann_query = "SELECT * FROM announcements ORDER BY date_posted DESC";
+$ann_result = $conn->query(query: $ann_query);
+
+$has_announcements = $ann_result->num_rows > 0;
+
 // Is the user logged in? If not, redirect to login page
 if (!isset($_SESSION['user_id'])) {
     header(header: "location: login.php");
@@ -59,7 +65,11 @@ if (!isset($_SESSION['user_id'])) {
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+                        <?php if ($_SESSION['role'] === 'admin') {
+                            echo '<h1 class="h3 mb-0 text-gray-800">Admin Dashboard</h1>';
+                        } else {
+                            echo '<h1 class="h3 mb-0 text-gray-800">Resident Dashboard</h1>';
+                        } ?>
                     </div>
 
                     <!-- Dynamic card row to show pending stuff -->
@@ -86,32 +96,83 @@ if (!isset($_SESSION['user_id'])) {
                     <!-- Content Row -->
 
                     <div class="row">
-
                         <!-- Announcements Card -->
                         <div class="col-xl-8 col-lg-7 mb-4">
                             <div class="card shadow h-100">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Announcements</h6>
+                                    <?php if ($_SESSION['role'] === 'admin') {
+                                        echo '<a href="#" data-toggle="modal" data-target="#createAnnouncementModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                        <i class="fas fa-bullhorn"></i>Create Announcement</a>';
+                                    } ?>
                                 </div>
-                                <!-- Card Body -->
-                                <div class="card-body d-flex flex-column justify-content-center align-items-center" style="min-height: 20rem;">
-                                    <i class="fas fa-bullhorn fa-3x text-gray-300 mb-3"></i>
-                                    <p class="text-gray-500 mb-0"><i>No Announcements at this time.</i></p>
+                                
+                                <div class="card-body p-0" style="min-height: 20rem; overflow-x: hidden;">
+                                    <?php if ($has_announcements): ?>
+                                        <div class="list-group list-group-flush">
+                                            <?php while ($ann_query = $ann_result->fetch_assoc()): ?>
+                                                
+                                                <div class="list-group-item list-group-item-action p-4 border-left-primary">
+                                                    <div class="d-flex w-100 justify-content-between align-items-center mb-1">
+                                                        <h6 class="font-weight-bold text-primary mb-0 text-truncate" style="max-width: 70%;">
+                                                            <?php echo htmlspecialchars(string: $ann_query['title']); ?>
+                                                        </h6>
+                                                        <small class="text-muted text-nowrap">
+                                                            <i class="fas fa-calendar-day mr-1"></i>
+                                                            <?php echo date(format: 'M d, Y', timestamp: strtotime(datetime: $ann_query['date_posted'])); ?>
+                                                        </small>
+                                                    </div>
+                                                    
+                                                    <p class="mb-2 text-gray-800 text-truncate">
+                                                        <?php echo htmlspecialchars(string: $ann_query['message']); ?>
+                                                    </p>
+
+                                                    <div class="mt-2 d-flex justify-content-between align-items-center">
+                                                        <button class="btn btn-link btn-sm p-0 text-primary font-weight-bold view-announcement"
+                                                                data-toggle="modal" 
+                                                                data-target="#viewAnnouncementModal"
+                                                                data-title="<?php echo htmlspecialchars(string: $ann_query['title']); ?>"
+                                                                data-date="<?php echo date(format: 'M d, Y', timestamp: strtotime($ann_query['date_posted'])); ?>"
+                                                                data-message="<?php echo htmlspecialchars(string: $ann_query['message']); ?>">
+                                                            Read More...
+                                                        </button>
+
+                                                        <?php if ($_SESSION['role'] === 'admin'): ?>
+                                                            <div>
+                                                                <a href="#" class="btn btn-sm btn-outline-secondary mr-2" title="Edit Announcement">
+                                                                    <i class="fas fa-edit"></i>
+                                                                </a>
+                                                                
+                                                                <button type="button" 
+                                                                        class="btn btn-sm btn-outline-danger" 
+                                                                        data-toggle="modal" 
+                                                                        data-target="#deleteAnnouncementModal"
+                                                                        data-id="<?php echo $ann_query['announcement_id']; ?>">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </button>
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                </div>
+
+                                            <?php endwhile; ?>
+                                        </div>
+                                    <?php else: ?>
+                                        <div class="d-flex flex-column justify-content-center align-items-center h-100 py-5">
+                                            <i class="fas fa-bullhorn fa-3x text-gray-300 mb-3"></i>
+                                            <p class="text-gray-500 mb-0"><i>No Announcements at this time.</i></p>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </div>
-
+                        
                         <!-- Schedule Card -->
                         <div class="col-xl-4 col-lg-5 mb-4">
                             <div class="card shadow h-100">
-                                <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Schedules</h6>
                                 </div>
-                                <!-- Here lies the calendar // Script below the footer -->
                                 <div id="calendar"></div>
                             </div>
                         </div>
@@ -205,6 +266,15 @@ if (!isset($_SESSION['user_id'])) {
         <i class="fas fa-angle-up"></i>
     </a>
 
+    <!-- Create Announcement Modal-->
+    <?php include 'includes/create_announcement.php'; ?>
+
+    <!-- View Announcement Modal-->
+    <?php include 'includes/announcement_details.php'; ?>
+
+    <!-- Delete Announcement Modal-->
+    <?php include 'includes/delete_ann_modal.php'; ?>
+
     <!-- Logout Modal-->
     <?php include 'logout_modal.php'; ?>
 
@@ -224,6 +294,39 @@ if (!isset($_SESSION['user_id'])) {
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <!-- View Announcement Modal Script -->
+    <script>
+    $(document).ready(function() {
+        $('#viewAnnouncementModal').on('show.bs.modal', function (event) {
+            // 1. Find the exact button that was clicked
+            var button = $(event.relatedTarget); 
+            
+            // 2. Extract the data from that button's attributes
+            var title = button.attr('data-title');
+            var date = button.attr('data-date');
+            var message = button.attr('data-message');
+            
+            // 3. Find the modal itself and inject the text into the correct IDs
+            var modal = $(this);
+            modal.find('#viewTitle').text(title);
+            modal.find('#viewDate').text('Posted on: ' + date);
+            modal.find('#viewMessage').text(message);
+        });
+    });
+    </script>
+
+    <!-- Delete Announcement Modal Script -->
+    <script>
+    $(document).ready(function() {
+        $('#deleteAnnouncementModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); 
+            var announcementId = button.attr('data-id'); 
+
+            $('#confirmDeleteBtn').attr('href', 'includes/delete_announcement.php?id=' + announcementId);
+        });
+    });
+    </script>
 
 </body>
 
