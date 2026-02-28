@@ -15,8 +15,70 @@ $_SESSION['last_activity'] = time();
 // Checks if there are announcements
 $ann_query = "SELECT * FROM announcements ORDER BY date_posted DESC";
 $ann_result = $conn->query(query: $ann_query);
-
 $has_announcements = $ann_result->num_rows > 0;
+
+// Start of quick card stuff
+
+// Initialize counts to zero
+$pending_complaints_count = 0;
+$resolved_complaints_count = 0;
+$pending_notices_count = 0;
+$resolved_notices_count = 0;
+
+$user_id = $_SESSION['user_id'];
+$role = $_SESSION['role'];
+
+// Bases queries on role
+if ($role === 'admin') {
+    // ADMIN = Count everything in the subdivision
+    $complaint_sql = "SELECT 
+                    SUM(CASE WHEN complaint_status = 'pending' THEN 1 ELSE 0 END) AS pending_comp,
+                    SUM(CASE WHEN complaint_status = 'resolved' THEN 1 ELSE 0 END) AS resolved_comp
+                 FROM complaints";
+                 
+    $notice_sql = "SELECT 
+                    SUM(CASE WHEN notice_status = 'pending' THEN 1 ELSE 0 END) AS pending_not,
+                    SUM(CASE WHEN notice_status = 'resolved' THEN 1 ELSE 0 END) AS resolved_not
+                   FROM notices";
+                   
+    $complaint_stmt = $conn->prepare($complaint_sql);
+    $notice_stmt = $conn->prepare($notice_sql);
+
+} else {
+    // RESIDENT = Count ONLY items matching their user_id
+    $complaint_sql = "SELECT 
+                    SUM(CASE WHEN complaint_status = 'pending' THEN 1 ELSE 0 END) AS pending_comp,
+                    SUM(CASE WHEN complaint_status = 'resolved' THEN 1 ELSE 0 END) AS resolved_comp
+                 FROM complaints WHERE resident_id = ?";
+                 
+    $notice_sql = "SELECT 
+                    SUM(CASE WHEN notice_status = 'pending' THEN 1 ELSE 0 END) AS pending_not,
+                    SUM(CASE WHEN notice_status = 'resolved' THEN 1 ELSE 0 END) AS resolved_not
+                   FROM notices WHERE resident_id = ?";
+                   
+    $complaint_stmt = $conn->prepare($complaint_sql);
+    $complaint_stmt->bind_param("i", $user_id);
+    
+    $notice_stmt = $conn->prepare($notice_sql);
+    $notice_stmt->bind_param("i", $user_id);
+}
+
+$complaint_stmt->execute();
+$comp_result = $complaint_stmt->get_result();
+if ($comp_row = $comp_result->fetch_assoc()) {
+    $pending_complaints_count = (int)$comp_row['pending_comp'];
+    $resolved_complaints_count = (int)$comp_row['resolved_comp'];
+}
+$complaint_stmt->close();
+
+$notice_stmt->execute();
+$notice_result = $notice_stmt->get_result();
+if ($notice_row = $notice_result->fetch_assoc()) {
+    $pending_notices_count = (int)$notice_row['pending_not'];
+    $resolved_notices_count = (int)$notice_row['resolved_not'];
+}
+$notice_stmt->close();
+// End of quick card stuff
 ?>
 
 <!DOCTYPE html>
@@ -76,8 +138,9 @@ $has_announcements = $ann_result->num_rows > 0;
                         } ?>
                     </div>
 
-                    <!-- Dynamic card row to show pending stuff -->
+                    <!-- Dynamic card row to serve as quick access -->
                     <div class="row">
+
                         <!-- Pending Complaints / Notices -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
@@ -86,10 +149,64 @@ $has_announcements = $ann_result->num_rows > 0;
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                                 <a href="view_complaint.php">Pending Complaints</a></div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">1</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $pending_complaints_count; ?></div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resolved Complaints -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                <a href="view_complaint.php">Resolved Complaints</a></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $resolved_complaints_count; ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-check fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pending Notices -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                                <a href="view_visitor_notice.php">Pending Notices</a></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $pending_notices_count; ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-bell fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resolved Notices -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                                <a href="view_visitor_notice.php">Resolved Notices</a></div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800"><?php echo $resolved_notices_count; ?></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-bell fa-2x text-gray-300"></i>
                                         </div>
                                     </div>
                                 </div>
