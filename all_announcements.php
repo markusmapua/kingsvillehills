@@ -2,7 +2,7 @@
 session_start();
 require 'db_connect.php';
 
-$limit = 8; // Number of announcements to display on the homepage
+$limit = 8; // Max number of announcements per page
 
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 
@@ -72,8 +72,12 @@ $ann_result = $conn->query($ann_sql);
                     </div>
 
                     <div class="card shadow mb-4">
-                        <div class="card-header py-3">
+                        <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Announcement History</h6>
+                            <?php if ($_SESSION['role'] === 'admin') {
+                                echo '<a href="#" data-toggle="modal" data-target="#createAnnouncementModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                                <i class="fas fa-bullhorn"></i>Create Announcement</a>';
+                            } ?>
                         </div>
                         
                         <!-- The thing where the announcements are displayed -->
@@ -88,10 +92,39 @@ $ann_result = $conn->query($ann_sql);
                                         </h5>
                                         <small class="text-muted text-nowrap">
                                             <i class="fas fa-calendar-day mr-1"></i>
-                                            <?php echo date('M d, Y', strtotime($ann_query['date_posted'])); ?>
+                                            <?php echo date('M d, Y g:i A', strtotime($ann_query['date_posted'])); 
+                                            if (!empty($ann_query['updated_at'])) {
+                                                echo '<small class="text-warning ml-2 font-italic">(Edited on: ' . date('M d, Y g:i A', strtotime($ann_query['updated_at'])) . ')</small>';
+                                            }
+                                            ?>
                                         </small>
                                     </div>
                                     <p class="mb-0 text-gray-800" style="white-space: pre-wrap;"><?php echo htmlspecialchars($ann_query['message']); ?></p>
+                                    
+                                    <!-- Edit/Delete Buttons -->
+                                    <?php if ($_SESSION['role'] === 'admin'): ?>
+                                        <div class ="mt-3">
+                                            <!-- Edit Announcement -->
+                                            <button type="button" 
+                                                    class="btn btn-sm btn-outline-warning" 
+                                                    data-toggle="modal" 
+                                                    data-target="#editAnnouncementModal"
+                                                    data-id="<?php echo $ann_query['announcement_id']; ?>"
+                                                    data-title="<?php echo htmlspecialchars($ann_query['title']); ?>"
+                                                    data-message="<?php echo htmlspecialchars($ann_query['message']); ?>">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            
+                                            <!-- Delete Announcement -->
+                                            <button type="button" 
+                                                    class="btn btn-sm btn-outline-danger" 
+                                                    data-toggle="modal" 
+                                                    data-target="#deleteAnnouncementModal"
+                                                    data-id="<?php echo $ann_query['announcement_id']; ?>">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    <?php endif; ?>
                                 </div>
 
                             <?php endwhile; ?>
@@ -146,6 +179,15 @@ $ann_result = $conn->query($ann_sql);
         <i class="fas fa-angle-up"></i>
     </a>
 
+    <!-- Create Announcement Modal-->
+    <?php include 'includes/create_announcement.php'; ?>
+
+    <!-- Edit Announcement Modal-->
+    <?php include 'includes/edit_ann_modal.php'; ?>
+
+    <!-- Delete Announcement Modal-->
+    <?php include 'includes/delete_ann_modal.php'; ?>
+
     <!-- Logout Modal-->
     <?php include 'logout_modal.php'; ?>
 
@@ -158,6 +200,9 @@ $ann_result = $conn->query($ann_sql);
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Announcement Modals -->
+    <script src="js/announcements.js"></script>
 
 </body>
 </html>

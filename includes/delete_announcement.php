@@ -11,11 +11,6 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 if (isset($_GET['id'])) {
     $announcement_id = $_GET['id'];
 
-    // If JavaScript accidentally sends 'undefined', stop the code so it doesn't crash the database!
-    if ($announcement_id === 'undefined') {
-        die("Wait! The JavaScript is sending 'undefined' instead of a real number. Check your dashboard button!");
-    }
-
     $stmt = $conn->prepare("DELETE FROM announcements WHERE announcement_id = ?");
     $stmt->bind_param("i", $announcement_id);
 

@@ -25,7 +25,7 @@ require 'db_connect.php';
                 </div> 
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-primary" type="submit" name="submit_announcement">Submit</button>
+                    <button class="btn btn-warning" type="submit" name="submit_announcement">Submit</button>
                 </div>
             </form>
 

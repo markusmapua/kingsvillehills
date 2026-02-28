@@ -131,7 +131,10 @@ if (!isset($_SESSION['user_id'])) {
                                                             </h6>
                                                             <small class="text-muted text-nowrap">
                                                                 <i class="fas fa-calendar-day mr-1"></i>
-                                                                <?php echo date('M d, Y', strtotime($ann_query['date_posted'])); ?>
+                                                                <?php echo date('M d, Y g:i A', strtotime($ann_query['date_posted'])); ?>
+                                                                <?php if (!empty($ann_query['updated_at'])): ?>
+                                                                    <small class="text-warning ml-2 font-italic">(Edited on: <?php echo date('M d, Y g:i A', strtotime($ann_query['updated_at'])); ?>)</small>
+                                                                <?php endif; ?>
                                                             </small>
                                                         </div>
                                                         
@@ -144,17 +147,26 @@ if (!isset($_SESSION['user_id'])) {
                                                                     data-toggle="modal" 
                                                                     data-target="#viewAnnouncementModal"
                                                                     data-title="<?php echo htmlspecialchars($ann_query['title']); ?>"
-                                                                    data-date="<?php echo date('M d, Y', strtotime($ann_query['date_posted'])); ?>"
+                                                                    data-updated-at="<?php echo !empty($ann_query['updated_at']) ? date('M d, Y g:i A', strtotime($ann_query['updated_at'])) : ''; ?>"
+                                                                    data-date="<?php echo date('M d, Y g:i A', strtotime($ann_query['date_posted'])); ?>"
                                                                     data-message="<?php echo htmlspecialchars($ann_query['message']); ?>">
                                                                 Read More...
                                                             </button>
 
                                                             <?php if ($_SESSION['role'] === 'admin'): ?>
                                                                 <div>
-                                                                    <a href="#" class="btn btn-sm btn-outline-secondary mr-2" title="Edit Announcement">
+                                                                    <!-- Edit Announcement -->
+                                                                    <button type="button" 
+                                                                            class="btn btn-sm btn-outline-warning" 
+                                                                            data-toggle="modal" 
+                                                                            data-target="#editAnnouncementModal"
+                                                                            data-id="<?php echo $ann_query['announcement_id']; ?>"
+                                                                            data-title="<?php echo htmlspecialchars($ann_query['title']); ?>"
+                                                                            data-message="<?php echo htmlspecialchars($ann_query['message']); ?>">
                                                                         <i class="fas fa-edit"></i>
-                                                                    </a>
+                                                                    </button>
                                                                     
+                                                                    <!-- Delete Announcement -->
                                                                     <button type="button" 
                                                                             class="btn btn-sm btn-outline-danger" 
                                                                             data-toggle="modal" 
@@ -290,6 +302,9 @@ if (!isset($_SESSION['user_id'])) {
     <!-- View Announcement Modal-->
     <?php include 'includes/announcement_details.php'; ?>
 
+    <!-- Edit Announcement Modal-->
+    <?php include 'includes/edit_ann_modal.php'; ?>
+
     <!-- Delete Announcement Modal-->
     <?php include 'includes/delete_ann_modal.php'; ?>
 
@@ -313,38 +328,8 @@ if (!isset($_SESSION['user_id'])) {
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
 
-    <!-- View Announcement Modal Script -->
-    <script>
-    $(document).ready(function() {
-        $('#viewAnnouncementModal').on('show.bs.modal', function (event) {
-            // 1. Find the exact button that was clicked
-            var button = $(event.relatedTarget); 
-            
-            // 2. Extract the data from that button's attributes
-            var title = button.attr('data-title');
-            var date = button.attr('data-date');
-            var message = button.attr('data-message');
-            
-            // 3. Find the modal itself and inject the text into the correct IDs
-            var modal = $(this);
-            modal.find('#viewTitle').text(title);
-            modal.find('#viewDate').text('Posted on: ' + date);
-            modal.find('#viewMessage').text(message);
-        });
-    });
-    </script>
-
-    <!-- Delete Announcement Modal Script -->
-    <script>
-    $(document).ready(function() {
-        $('#deleteAnnouncementModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); 
-            var announcementId = button.attr('data-id'); 
-
-            $('#confirmDeleteBtn').attr('href', 'includes/delete_announcement.php?id=' + announcementId);
-        });
-    });
-    </script>
+    <!-- Announcements Modal Script -->
+    <script src="js/announcements.js"></script>
 
 </body>
 
