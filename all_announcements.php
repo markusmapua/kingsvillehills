@@ -204,5 +204,8 @@ $ann_result = $conn->query($ann_sql);
     <!-- Announcement Modals -->
     <script src="js/announcements.js"></script>
 
+    <!-- Sidebar State Script 'cause its annoying when the thing is opening by default lol -->
+    <!-- <script src="js/sidebar_state.js"></script> forget it it's more annoying when it flashes :/ -->
+
 </body>
 </html>

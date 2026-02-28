@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <ul class="navbar-nav kingsville-bar sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav kingsville-bar sidebar sidebar-dark accordion toggled" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">

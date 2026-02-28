@@ -85,6 +85,9 @@ require 'db_connect.php';
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
 
+    <!-- Sidebar State Script 'cause its annoying when the thing is opening by default lol -->
+    <!-- <script src="js/sidebar_state.js"></script> forget it it's more annoying when it flashes :/ -->
+
 </body>
 
 </html>
