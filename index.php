@@ -222,26 +222,26 @@ $notice_stmt->close();
                             <div class="card shadow h-100">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Announcements</h6>
-                                    <?php if ($_SESSION['role'] === 'admin') {
-                                        echo '<a href="#" data-toggle="modal" data-target="#createAnnouncementModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                        <i class="fas fa-bullhorn"></i>Create Announcement</a>';
-                                    } ?>
+                                    <?php if ($_SESSION['role'] === 'admin'): ?>
+                                        <a href="#" data-toggle="modal" data-target="#createAnnouncementModal" class="btn btn-sm btn-primary shadow-sm">
+                                        <i class="fas fa-bullhorn mr-1"></i>
+                                        <span class="d-none d-sm-inline">Create Announcement</a></span>
+                                    <?php endif; ?>
                                 </div>
                                 
                                 <!-- PHP stuff that dynamically displays announcements -->
                                 <div class="card-body p-0" style="min-height: 20rem; overflow-x: hidden;">
                                     <?php if ($has_announcements): ?>
-                                        
                                         <div style="max-height: 350px; overflow-y: auto;">
                                             <div class="list-group list-group-flush">
                                                 <?php while ($ann_query = $ann_result->fetch_assoc()): ?>               
                                                     
                                                     <div class="list-group-item list-group-item-action p-4">
-                                                        <div class="d-flex w-100 justify-content-between align-items-center mb-1">
-                                                            <h6 class="font-weight-bold text-primary mb-0 text-truncate" style="max-width: 70%;">
+                                                        <div class="d-flex w-100 flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
+                                                            <h6 class="font-weight-bold text-primary mb-2 mb-md-0" style="max-width: 70%;">
                                                                 <?php echo htmlspecialchars($ann_query['title']); ?>
                                                             </h6>
-                                                            <small class="text-muted text-nowrap">
+                                                            <small class="text-muted">
                                                                 <i class="fas fa-calendar-day mr-1"></i>
                                                                 <?php echo date('M d, Y g:i A', strtotime($ann_query['date_posted'])); ?>
                                                                 <?php if (!empty($ann_query['updated_at'])): ?>
@@ -250,9 +250,7 @@ $notice_stmt->close();
                                                             </small>
                                                         </div>
                                                         
-                                                        <p class="mb-2 text-gray-800 text-truncate">
-                                                            <?php echo htmlspecialchars($ann_query['message']); ?>
-                                                        </p>
+                                                        <p class="mb-2 text-gray-800" style="white-space: pre-wrap; word-break: break-word;"><?php echo htmlspecialchars($ann_query['message']); ?></p>
 
                                                         <div class="mt-2 d-flex justify-content-between align-items-center">
                                                             <button class="btn btn-link btn-sm p-0 text-primary font-weight-bold view-announcement"
@@ -432,13 +430,6 @@ $notice_stmt->close();
 
     <!-- Custom scripts for all pages-->
     <script src="js/sb-admin-2.min.js"></script>
-
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
 
     <!-- Announcements Modal Script -->
     <script src="js/announcements.js"></script>

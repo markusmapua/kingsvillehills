@@ -75,10 +75,11 @@ $ann_result = $conn->query($ann_sql);
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <h6 class="m-0 font-weight-bold text-primary">Announcement History</h6>
-                            <?php if ($_SESSION['role'] === 'admin') {
-                                echo '<a href="#" data-toggle="modal" data-target="#createAnnouncementModal" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-                                <i class="fas fa-bullhorn"></i>Create Announcement</a>';
-                            } ?>
+                            <?php if ($_SESSION['role'] === 'admin'): ?>
+                                <a href="#" data-toggle="modal" data-target="#createAnnouncementModal" class="btn btn-sm btn-primary shadow-sm">
+                                <i class="fas fa-bullhorn mr-1"></i>
+                                <span class="d-none d-sm-inline">Create Announcement</a></span>
+                            <?php endif; ?>
                         </div>
                         
                         <!-- The thing where the announcements are displayed -->
@@ -87,11 +88,11 @@ $ann_result = $conn->query($ann_sql);
                             <?php while ($ann_query = $ann_result->fetch_assoc()): ?>               
                                 
                                 <div class="list-group-item p-4">
-                                    <div class="d-flex w-100 justify-content-between align-items-center mb-3">
+                                    <div class="d-flex w-100 flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-3">
                                         <h5 class="font-weight-bold text-primary mb-0">
                                             <?php echo htmlspecialchars($ann_query['title']); ?>
                                         </h5>
-                                        <small class="text-muted text-nowrap">
+                                        <small class="text-muted">
                                             <i class="fas fa-calendar-day mr-1"></i>
                                             <?php echo date('M d, Y g:i A', strtotime($ann_query['date_posted'])); 
                                             if (!empty($ann_query['updated_at'])) {
@@ -100,7 +101,7 @@ $ann_result = $conn->query($ann_sql);
                                             ?>
                                         </small>
                                     </div>
-                                    <p class="mb-0 text-gray-800" style="white-space: pre-wrap;"><?php echo htmlspecialchars($ann_query['message']); ?></p>
+                                    <p class="mb-0 text-gray-800" style="white-space: pre-wrap; word-break: break-word;"><?php echo htmlspecialchars($ann_query['message']); ?></p>
                                     
                                     <!-- Edit/Delete Buttons -->
                                     <?php if ($_SESSION['role'] === 'admin'): ?>
