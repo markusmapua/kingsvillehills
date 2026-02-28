@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'db_connect.php';
+require 'includes/auth_check.php';
 
 // error stuff
 $error_code = $_GET['code'] ?? '404';
@@ -106,7 +107,7 @@ switch ($error_code) {
     </a>
 
     <!-- Logout Modal-->
-    <?php include 'logout_modal.php'; ?>
+    <?php include 'includes/logout_modal.php'; ?>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>

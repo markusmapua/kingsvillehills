@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'db_connect.php';
+require 'includes/auth_check.php';
 
 $limit = 8; // Max number of announcements per page
 
@@ -189,7 +190,7 @@ $ann_result = $conn->query($ann_sql);
     <?php include 'includes/delete_ann_modal.php'; ?>
 
     <!-- Logout Modal-->
-    <?php include 'logout_modal.php'; ?>
+    <?php include 'includes/logout_modal.php'; ?>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>

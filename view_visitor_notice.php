@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'db_connect.php';
+require 'includes/auth_check.php';
 
 $timeout_duration = 30;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > ($timeout_duration * 60)) {
@@ -10,11 +11,6 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
     exit();
 }
 $_SESSION['last_activity'] = time();
-
-if (!isset($_SESSION['user_id'])) {
-    header("location: login.php");
-    exit();
-}
 
 $user_id = $_SESSION['user_id'];
 $role = $_SESSION['role'];
@@ -294,7 +290,7 @@ $result = $conn->query($query);
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <?php include 'logout_modal.php'; ?>
+    <?php include 'includes/logout_modal.php'; ?>
 
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

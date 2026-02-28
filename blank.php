@@ -2,6 +2,12 @@
 session_start();
 require 'db_connect.php';
 
+// Admin only page; just a bog standard blank slate. REMOVE THIS IF DONE MAKING THE PAGE
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
+    header("Location: ../error.php?code=403");
+    exit();
+}
+
 ?>
 
 <!DOCTYPE html>

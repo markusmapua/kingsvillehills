@@ -23,6 +23,15 @@ if (isset($_POST['login_submit'])) {
             $_SESSION['full_name'] = $user['first_name'] . " " . $user['last_name'];
             $_SESSION['role'] = $user['role'];
 
+            // Handle "Remember Me" functionality
+            if (isset($_POST['remember_me'])) {
+                $token = bin2hex(random_bytes(32)); 
+                $update_stmt = $conn->prepare("UPDATE users SET remember_token = ? WHERE user_id = ?");
+                $update_stmt->bind_param("si", $token, $user['user_id']);
+                $update_stmt->execute();
+
+                setcookie("remember_me", $token, time() + (86400 * 30), "/");
+            }
             // Redirect to dashboard
             header(header: "location: index.php");
             exit();
@@ -91,7 +100,7 @@ if (isset($_POST['login_submit'])) {
                                         </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck" name="remember_me">
                                                 <label class="custom-control-label" for="customCheck">Remember
                                                     Me</label>
                                             </div>

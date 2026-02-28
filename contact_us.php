@@ -1,6 +1,8 @@
 <?php
 session_start();
 require 'db_connect.php';
+require 'includes/auth_check.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -82,7 +84,7 @@ require 'db_connect.php';
     </a>
 
     <!-- Logout Modal-->
-    <?php include 'logout_modal.php'; ?>
+    <?php include 'includes/logout_modal.php'; ?>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>

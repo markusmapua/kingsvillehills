@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'db_connect.php';
+require 'includes/auth_check.php';
 
 $timeout_duration = 30;
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > ($timeout_duration * 60)) {
@@ -10,11 +11,6 @@ if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) >
     exit();
 }
 $_SESSION['last_activity'] = time();
-
-if (!isset($_SESSION['user_id'])) {
-    header("location: login.php");
-    exit();
-}
 
 $success_msg = '';
 $error_msg = '';
@@ -190,7 +186,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_notice'])) {
         <i class="fas fa-angle-up"></i>
     </a>
 
-    <?php include 'logout_modal.php'; ?>
+    <?php include 'includes/logout_modal.php'; ?>
 
     <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

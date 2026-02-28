@@ -1,6 +1,7 @@
 <?php
 session_start();
 require 'db_connect.php';
+require 'includes/auth_check.php';
 
 $timeout_duration = 30; // 30 minutes
 if (isset($_SESSION['last_activity']) && (time() - $_SESSION['last_activity']) > ($timeout_duration * 60)) {
@@ -16,12 +17,6 @@ $ann_query = "SELECT * FROM announcements ORDER BY date_posted DESC";
 $ann_result = $conn->query(query: $ann_query);
 
 $has_announcements = $ann_result->num_rows > 0;
-
-// Is the user logged in? If not, redirect to login page
-if (!isset($_SESSION['user_id'])) {
-    header(header: "location: login.php");
-    exit();
-}
 ?>
 
 <!DOCTYPE html>
@@ -309,7 +304,7 @@ if (!isset($_SESSION['user_id'])) {
     <?php include 'includes/delete_ann_modal.php'; ?>
 
     <!-- Logout Modal-->
-    <?php include 'logout_modal.php'; ?>
+    <?php include 'includes/logout_modal.php'; ?>
 
     <!-- Bootstrap core JavaScript-->
     <script src="vendor/jquery/jquery.min.js"></script>
